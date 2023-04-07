@@ -3,6 +3,8 @@
     const class2type = {},
         toString = class2type.toString,
         hasOwn = class2type.hasOwnProperty;
+
+    // 主要通过 Object.toString 这个方法 和 正则来判断类型
     const toType = function toType(obj) {
         let reg = /^\[object ([\w\W]+)\]$/;
         if (obj == null) return obj + "";
@@ -15,9 +17,19 @@
             typeof obj.nodeType !== "number" &&
             typeof obj.item !== "function";
     };
+    /**
+     *  通过 window 的循环引用来判断是否是window
+     * @param obj
+     * @returns {boolean}
+     */
     const isWindow = function isWindow(obj) {
         return obj != null && obj === obj.window;
     };
+    /**
+     * 判断是否存再 length 属性
+     * @param obj
+     * @returns {boolean}
+     */
     const isArrayLike = function isArrayLike(obj) {
         let length = !!obj && "length" in obj && obj.length,
             type = toType(obj);
@@ -228,6 +240,27 @@
         }
     };
 
+    const formatTime = function formatTime(time, template) {
+        if (typeof time !== "string") {
+            time = new Date().toLocaleString('zh-CN', { hour12: false });
+        }
+        if (typeof template !== "string") {
+            template = "{0}年{1}月{2}日 {3}:{4}:{5}";
+        }
+        let arr = [];
+        if (/^\d{8}$/.test(time)) {
+            let [, $1, $2, $3] = /^(\d{4})(\d{2})(\d{2})$/.exec(time);
+            arr.push($1, $2, $3);
+        } else {
+            arr = time.match(/\d+/g);
+        }
+        return template.replace(/\{(\d+)\}/g, (_, $1) => {
+            let item = arr[$1] || "00";
+            if (item.length < 2) item = "0" + item;
+            return item;
+        });
+    };
+
     const utils = {
         toType,
         isFunction,
@@ -242,7 +275,8 @@
         each,
         merge,
         clone,
-        storage
+        storage,
+        formatTime
     };
 
     /* 处理冲突 */
