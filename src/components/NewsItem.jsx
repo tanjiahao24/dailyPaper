@@ -1,8 +1,9 @@
+import React from "react";
 import { Image } from 'antd-mobile';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-function NewsItem(props) {
+const NewsItem = (props) => {
   let { info } = props;
   if (!info) return null;
 
@@ -18,8 +19,8 @@ function NewsItem(props) {
       <Image src={images[0]} lazy />
     </Link>
   </div>;
-}
-
+};
+/* 属性规则处理 */
 NewsItem.defaultProps = {
   info: null
 };
@@ -27,4 +28,4 @@ NewsItem.propTypes = {
   info: PropTypes.object
 };
 
-export default NewsItem
+export default NewsItem;

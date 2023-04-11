@@ -6,5 +6,5 @@ function TSkeleton() {
     <Skeleton.Title animated />
     <Skeleton.Paragraph lineCount={5} animated />
   </div>;
-};
+}
 export default TSkeleton;
