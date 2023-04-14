@@ -1,6 +1,8 @@
 import { lazy } from 'react'
 import Home from "../pages/Home";
 
+import demoRoutes from './demoRoutes'
+
 const routes = [
   {
     path: '/',
@@ -49,6 +51,12 @@ const routes = [
     meta: {
       title: 'daily-update'
     }
+  },
+  {
+    path: '/zustand',
+    name: 'zustand',
+    component: lazy(() => import('../pages/zustand/index')),
+    children: demoRoutes
   },
   {
     path: '*',

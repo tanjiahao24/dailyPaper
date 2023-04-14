@@ -12,7 +12,7 @@ export default function RouterList({routes}) {
             return (
                 <Route path={path} key={name} element={ <Element {...item}/> }>
                   {
-                    Array.isArray(children) ? RouterList(children) : null
+                      Array.isArray(children) ? RouterList({routes: children}) : null
                   }
                 </Route>
             )
