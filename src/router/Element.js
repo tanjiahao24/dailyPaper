@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from "react";
 import {useNavigate, useLocation, useParams, useSearchParams} from 'react-router-dom';
 import {Mask, DotLoading, Toast} from 'antd-mobile';
-import {useSelector, useDispatch} from 'react-redux'
-import {queryUserInfo} from '../store/features/baseSlice'
+// import {useSelector, useDispatch} from 'react-redux'
+// import {queryUserInfo} from '../store/features/baseSlice'
+import useStore from "../zStore";
 
 /* 统一路由配置 */
 const isCheckLogin = (path) => {
@@ -10,8 +11,12 @@ const isCheckLogin = (path) => {
   return checkList.includes(path);
 };
 const Element = function Element(props) {
-  const info = useSelector(state => state.base.info)
-  const dispatch = useDispatch()
+  // rtk
+  // const info = useSelector(state => state.base.info)
+  // const dispatch = useDispatch()
+
+  // zustand
+  const [info, queryUserInfo] = useStore(state => [state.base.info, state.queryUserInfo])
   let {component: Component, meta, path} = props;
   let isShow = !(!info && isCheckLogin(path));
   const [query, setQuery] = useState(false)
@@ -29,25 +34,29 @@ const Element = function Element(props) {
 
   // 登录态校验
   useEffect(() => {
-    if (isShow) return;
-    if (!query) {
-      dispatch(queryUserInfo());
-      setQuery(true)
-      return
-    }
+    (async () => {
+      if (isShow) return;
+      if (!query) {
+        // dispatch(queryUserInfo());
+        await queryUserInfo()
+        setQuery(true)
+        return
+      }
 
-    if (!info) {
-      // 如果获取后还是不存在:没有登录
-      Toast.show({
-        icon: 'fail',
-        content: '请先登录'
-      });
-      // 跳转到登录页
-      navigate({
-        pathname: '/login',
-        search: `?to=${path}`
-      }, {replace: true});
-    }
+      if (!info) {
+        // 如果获取后还是不存在:没有登录
+        Toast.show({
+          icon: 'fail',
+          content: '请先登录'
+        });
+        // 跳转到登录页
+        navigate({
+          pathname: '/login',
+          search: `?to=${path}`
+        }, {replace: true});
+      }
+    })()
+
   });
 
   return <>

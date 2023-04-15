@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom';
 import { RightOutline } from 'antd-mobile-icons';
 import styled from "styled-components";
 import TNavBar from '../components/TNavBar';
-import { connect } from 'react-redux';
-import action from '../store/action';
+import { connect, useSelector, useDispatch } from 'react-redux';
 import _ from '../assets/js/utils';
 import { Toast } from 'antd-mobile';
+import {clearStoreList} from "../store/features/storeSlice";
+import {clearUserInfo} from "../store/features/baseSlice";
+import useStore from "../zStore";
 
 /* 样式 */
 const PersonalBox = styled.div`
@@ -41,12 +43,21 @@ const PersonalBox = styled.div`
 `;
 
 const Personal = function Personal(props) {
-    let { info, clearUserInfo, clearStoreList, navigate } = props;
+    let { navigate } = props;
+    // rtk
+    // const dispatch = useDispatch()
+    // const info = useSelector(state => state.base.info)
+
+    // zustand
+    const [info, clearStoreList, clearUserInfo] = useStore(state => [state.base.info, state.clearStoreList, state.clearUserInfo])
+
     // 退出登录
     const signout = () => {
         // 清除redux中的信息
-        clearUserInfo();
-        clearStoreList();
+        // dispatch(clearUserInfo())
+        // dispatch(clearStoreList())
+        clearUserInfo()
+        clearStoreList()
         // 清除Token
         _.storage.remove('tk');
         // 提示
@@ -77,10 +88,12 @@ const Personal = function Personal(props) {
         </div>
     </PersonalBox>;
 };
-export default connect(
-    state => state.base,
-    {
-        clearUserInfo: action.base.clearUserInfo,
-        clearStoreList: action.store.clearStoreList
-    }
-)(Personal);
+// export default connect(
+//     state => state.base,
+//     {
+//         clearUserInfo: action.base.clearUserInfo,
+//         clearStoreList: action.store.clearStoreList
+//     }
+// )(Personal);
+
+export default Personal

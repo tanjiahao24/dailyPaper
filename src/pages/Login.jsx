@@ -52,7 +52,7 @@ const Login = (props) => {
             }
             // 登录成功:存储Token、存储登录者信息到redux、提示、跳转
             _.storage.set('tk', token);
-            dispatch(queryUserInfo()); //派发任务,同步redux中的状态信息
+            await dispatch(queryUserInfo()); //派发任务,同步redux中的状态信息
             Toast.show({
                 icon: 'success',
                 content: '登录/注册成功'

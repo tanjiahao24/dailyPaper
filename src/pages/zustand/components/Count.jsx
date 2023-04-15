@@ -1,6 +1,9 @@
 import useStore from "../store";
 function Count () {
-  const [count, deC, inC] = useStore(state => [state.count, state.decCount, state.incCount])
+  const [count, deC, inC] = useStore(state => [state.count, state.decCount, state.incCount], (oldValue, newValue) => {
+    console.log(oldValue, newValue)
+    return false
+  })
   return (
       <>
         <div>{count}</div>

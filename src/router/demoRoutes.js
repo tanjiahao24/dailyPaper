@@ -16,4 +16,9 @@ export default [
     name: 'zustand/nest',
     component: lazy(() => import('../pages/zustand/components/Nest'))
   },
+  {
+    path: '/zustand/presist',
+    name: 'zustand/presist',
+    component: lazy(() => import('../pages/zustand/components/Presist'))
+  },
 ]

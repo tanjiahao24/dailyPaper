@@ -5,7 +5,6 @@ import api from '../api';
 import TSkeleton from '../components/TSkeleton';
 import { flushSync } from 'react-dom';
 import { connect, useSelector, useDispatch } from 'react-redux';
-import action from '../store/action';
 import { removeStoreListById, queryStoreList} from '../store/features/storeSlice'
 import { queryUserInfo } from '../store/features/baseSlice'
 

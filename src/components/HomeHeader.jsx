@@ -1,15 +1,19 @@
 import React, { useMemo, useEffect } from "react";
 import timg from '@/assets/images/timg.jpg';
-import { connect, useSelector, useDispatch } from 'react-redux';
-import action from '../store/action';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { queryUserInfo } from '../store/features/baseSlice'
+import useStore from "../zStore";
+import {shallow} from "zustand/shallow";
 
 const HomeHeader = (props) => {
   const navigate = useNavigate();
-  const userInfo = useSelector(state => state.base.info)
-  const dispatch = useDispatch()
+  // rtk
+  // const userInfo = useSelector(state => state.base.info)
+  // const dispatch = useDispatch()
 
+  // zustand
+  const [userInfo, queryUserInfo] = useStore(state => [state.base.info, state.queryUserInfo], shallow)
   /* 计算时间中的月和日 */
   let { today, info, queryUserInfoAsync } = props;
   let time = useMemo(() => {
@@ -24,7 +28,8 @@ const HomeHeader = (props) => {
   // 第一次渲染完:如果info中没有信息,我们尝试派发一次,获取到登陆者信息
   useEffect(() => {
     if (!userInfo) {
-      dispatch(queryUserInfo());
+      // dispatch(queryUserInfo());
+      queryUserInfo()
     }
   }, [userInfo]);
 
